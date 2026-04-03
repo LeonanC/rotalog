@@ -23,10 +23,10 @@ class AppTranslations extends Translations {
       'ms_configuracao': 'Configuração',
       // ABOUTPAGE
       'ab_titulo': 'SOBRE',
-      'ab_version': 'Versão 1.0.4 + Build 2026',
+      'ab_version': 'Versão @version',
       'ab_descrition':
           'O Rotalog foi desenvolvido para transformar a experiência de motoristas virtuais, trazendo ferramentas reais de logística, gestão financeira e progressão de carreira para o Euro Truck Simulator 2 e American Truck Simulator.',
-      'ab_dev': 'Desenvolvidor',
+      'ab_dev': 'Desenvolvidor @name',
       'ab_repo': 'Repositório Oficial',
       'ab_lienca': 'Licença',
       'ab_powered_by': 'distribuído por',
@@ -133,10 +133,10 @@ class AppTranslations extends Translations {
       'ms_configuracao': 'Configuration',
       // ABOUTPAGE
       'ab_titulo': 'ABOUT',
-      'ab_version': 'Version 1.0.4 + Build 2026',
+      'ab_version': 'Version  @version',
       'ab_descrition':
           'Rotalog was developed to transform the experience of virtual drivers, bringing real logistics, financial management and career progression tools to Euro Truck Simulator 2 and American Truck Simulator.',
-      'ab_dev': 'Developer',
+      'ab_dev': 'Developer @name',
       'ab_repo': 'Official Repository',
       'ab_lienca': 'License',
       'ab_powered_by': 'Distributed by',
@@ -243,10 +243,10 @@ class AppTranslations extends Translations {
       'ms_configuracao': 'Configuración',
       // ABOUTPAGE
       'ab_titulo': 'ACERCA DE',
-      'ab_version': 'Versión 1.0.4 + Compilación 2026',
+      'ab_version': 'Versión  @version',
       'ab_descrition':
           'Rotalog se desarrolló para transformar la experiencia de los conductores virtuales, aportando herramientas reales de logística, gestión financiera y progresión profesional a Euro Truck Simulator 2 y American Truck Simulator.',
-      'ab_dev': 'Desarrollador',
+      'ab_dev': 'Desarrollador @name',
       'ab_repo': 'Repositorio oficial',
       'ab_lienca': 'Licencia',
       'ab_powered_by': 'Distribuido por',

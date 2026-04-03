@@ -68,7 +68,7 @@ class AboutPage extends GetView<AboutController> {
                 ),
               ),
               Text(
-                "ab_version".tr,
+                "ab_version".trParams({'version': controller.appVersion.value}),
                 style: TextStyle(
                   fontFamily: 'ShareTechMono',
                   color: Colors.white38,
@@ -93,23 +93,24 @@ class AboutPage extends GetView<AboutController> {
                 isLoading: isChecking,
                 onPressed: isChecking ? null : controller.checkForUpdate,
               ),
-              _buildInfoTile(
+              _buildActionButton(
+                label: "ab_dev".trParams({'name': 'Leonan C.'}),
                 icon: RemixIcons.code_s_slash_line,
-                title: "ab_dev".tr,
-                subtitle: "Leonan C.",
-                onTap: () => _launchURL('https://github.com/LeonanC'),
+                color: Colors.greenAccent,
+                onPressed: () => _launchURL('https://github.com/LeonanC'),
               ),
-              _buildInfoTile(
+              _buildActionButton(
+                label: "ab_repo".tr,
                 icon: RemixIcons.github_fill,
-                title: "ab_repo".tr,
-                subtitle: "https://github.com/LeonanC/rotalog",
-                onTap: () => _launchURL('https://github.com/LeonanC/rotalog'),
+                color: Colors.blueAccent,
+                onPressed: () =>
+                    _launchURL('https://github.com/LeonanC/rotalog'),
               ),
-              _buildInfoTile(
+              _buildActionButton(
+                label: "ab_lienca".tr,
                 icon: RemixIcons.shield_check_line,
-                title: "ab_lienca".tr,
-                subtitle: "MIT License",
-                onTap: () => _launchURL(
+                color: Colors.tealAccent,
+                onPressed: () => _launchURL(
                   'https://github.com/LeonanC/rotalog/blob/main/LICENSE',
                 ),
               ),
