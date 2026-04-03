@@ -51,6 +51,8 @@ class AppTranslations extends Translations {
       // SETTINGS PAGE
       'st_titulo': 'CONFIGURAÇÃO',
       'st_pref_viagem': 'PREFERÊNCIAS DE VIAGEM',
+      'st_moeda_preferida': 'Moeda Preferida',
+      'st_selecione_moeda': 'Selecione a Moeda',
       'st_unidade_distancia': 'Unidade de Distância',
       'st_milhas': 'Milhas (mi)',
       'st_quilometros': 'Quilômetros (km)',
@@ -68,6 +70,7 @@ class AppTranslations extends Translations {
       'st_privacidade': 'Privacidade',
       'st_privacidade_sub': 'Gerenciar compartilhamento de GPS',
       'st_selecione_idioma': 'Selecione o Idioma',
+      'st_logout': 'SAIR DA CONTA',
       // DETAIL HOMEPAGE
       'dt_titulo': 'DETALHES DO TRABALHO',
       'dt_peso': 'PESO',

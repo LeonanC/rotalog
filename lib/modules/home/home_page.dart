@@ -318,26 +318,28 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget _buildQuickStats(ThemeData theme) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
-        children: [
-          _buildStatCard(
-            theme,
-            "hp_viagens".tr,
-            controller.viagens.length.toString(),
-            RemixIcons.route_line,
-            warningAccent,
-          ),
-          const SizedBox(width: 12),
-          _buildStatCard(
-            theme,
-            "hp_media".tr,
-            "${(controller.totalDistancia.value / (controller.diasFiltro.value == 3650 ? 30 : controller.diasFiltro.value)).toStringAsFixed(1)} KM",
-            RemixIcons.flashlight_line,
-            successAccent,
-          ),
-        ],
+    return Obx(
+      () => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Row(
+          children: [
+            _buildStatCard(
+              theme,
+              "hp_viagens".tr,
+              controller.viagens.length.toString(),
+              RemixIcons.route_line,
+              warningAccent,
+            ),
+            const SizedBox(width: 12),
+            _buildStatCard(
+              theme,
+              "hp_media".tr,
+              "${(controller.totalDistancia.value / (controller.diasFiltro.value == 3650 ? 30 : controller.diasFiltro.value)).toStringAsFixed(1)} KM",
+              RemixIcons.flashlight_line,
+              successAccent,
+            ),
+          ],
+        ),
       ),
     );
   }

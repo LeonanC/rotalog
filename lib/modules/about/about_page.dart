@@ -177,43 +177,6 @@ class AboutPage extends GetView<AboutController> {
     );
   }
 
-  Widget _buildInfoTile({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required VoidCallback onTap,
-  }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 15),
-      decoration: BoxDecoration(
-        color: controller.cardDark,
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
-      ),
-      child: ListTile(
-        onTap: onTap,
-        leading: Icon(icon, color: controller.primaryAccent, size: 22),
-        title: Text(
-          title,
-          style: TextStyle(
-            color: Colors.white38,
-            fontSize: 11,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        subtitle: Text(
-          subtitle,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        trailing: Icon(RemixIcons.arrow_right_s_line, color: Colors.white12),
-      ),
-    );
-  }
-
   Future<void> _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
     if (!await launchUrl(uri)) {

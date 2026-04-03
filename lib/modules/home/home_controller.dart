@@ -36,13 +36,16 @@ class HomeController extends GetxController {
   var nivel = 1.obs;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    _configurarTTS();
-    loadAuxiliaryData();
-    _carregarDadosMotorista();
     ever(viagens, (_) => _calcularTotalDistancia());
     ever(diasFiltro, (_) => _calcularTotalDistancia());
+
+    await _carregarDadosMotorista();
+
+    _configurarTTS();
+    loadAuxiliaryData();
+
     bindViagens();
   }
 
@@ -91,13 +94,21 @@ class HomeController extends GetxController {
   }
 
   Future<void> _carregarDadosMotorista() async {
-    final uid = _auth.currentUser?.uid;
-    if (uid != null) {
-      var doc = await _firestore.collection('motoristas').doc(uid).get();
-      if (doc.exists) {
-        nivel.value = doc.data()?['nivel'] ?? 1;
-        xpAtual.value = doc.data()?['xp_atual'] ?? 0;
+    try {
+      final uid = _auth.currentUser?.uid;
+      if (uid != null) {
+        var doc = await _firestore.collection('motoristas').doc(uid).get();
+        if (doc.exists) {
+          final data = doc.data();
+          nivel.value = data?['nivel'] ?? 1;
+          xpAtual.value = data?['xp_atual'] ?? 0;
+          print(
+            "Perfil Rotalog Carregado: Nível ${nivel.value}, XP: ${xpAtual.value}",
+          );
+        }
       }
+    } catch (e) {
+      print("Erro ao carregar dados do motorista: $e");
     }
   }
 
@@ -233,37 +244,46 @@ class HomeController extends GetxController {
 
   void bindViagens() {
     final String? uid = _auth.currentUser?.uid;
+    if (uid == null) return;
 
-    if (uid == null) {
-      print("Nenhum usuário logado");
-      return;
-    }
-
-    viagens.bindStream(
-      _firestore
-          .collection('viagens')
-          .where('motorista_id', isEqualTo: uid)
-          .orderBy('data', descending: true)
-          .snapshots()
-          .map((snapshot) {
-            return snapshot.docs.map((doc) {
+    _firestore
+        .collection('viagens')
+        .where('motorista_id', isEqualTo: uid)
+        .orderBy('data', descending: true)
+        .snapshots()
+        .listen(
+          (snapshot) {
+            final lista = snapshot.docs.map((doc) {
               return ViagemModel.fromFirestore(doc.data(), doc.id);
             }).toList();
-          })
-          .handleError((error) {
+
+            viagens.assignAll(lista);
+
+            _calcularTotalDistancia();
+
+            print("Viagens sincronizadas: ${viagens.length}");
+          },
+          onError: (error) {
             print("Erro de conexão: $error");
-            Get.snackbar(
-              "Modo Offline",
-              "Não foi possível sincronizar com o servidor",
-              backgroundColor: Colors.orangeAccent,
-              snackPosition: SnackPosition.BOTTOM,
-            );
-          }),
-    );
+          },
+        );
   }
 
   void _calcularTotalDistancia() {
-    totalDistancia.value = viagens.fold(0, (sum, item) => sum + item.distancia);
+    if (viagens.isEmpty) {
+      totalDistancia.value = 0.0;
+      return;
+    }
+
+    final dataLimite = DateTime.now().subtract(
+      Duration(days: diasFiltro.value),
+    );
+
+    totalDistancia.value = viagens
+        .where((v) {
+          return v.data.isAfter(dataLimite);
+        })
+        .fold(0.0, (sum, item) => sum + item.distancia);
   }
 
   void mudarFiltro(int dias) => diasFiltro.value = dias;

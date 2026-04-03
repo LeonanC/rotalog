@@ -27,6 +27,8 @@ class PerfilController extends GetxController {
             .get();
         if (doc.exists) {
           userModel.value = UserModel2.fromFirestore(doc);
+        } else {
+          print("Documento do motorista não encontrado no banco.");
         }
       }
     } catch (e) {
@@ -37,7 +39,12 @@ class PerfilController extends GetxController {
   }
 
   void logout() async {
-    await _auth.signOut();
-    Get.offAllNamed('/login');
+    try {
+      await _auth.signOut();
+      userModel.value = null;
+      Get.offAllNamed('/login');
+    } catch (e) {
+      Get.snackbar("Erro", "Não foi possível sair");
+    }
   }
 }

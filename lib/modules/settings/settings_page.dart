@@ -326,8 +326,8 @@ class SettingsPage extends GetView<SettingsController> {
       child: ElevatedButton.icon(
         onPressed: () => perfilController.logout(),
         icon: Icon(RemixIcons.logout_box_r_line, color: logoutColor),
-        label: const Text(
-          "SAIR DA CONTA",
+        label: Text(
+          "st_logout".tr,
           style: TextStyle(color: logoutColor, fontWeight: FontWeight.bold),
         ),
         style: ElevatedButton.styleFrom(

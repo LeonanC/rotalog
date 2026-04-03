@@ -14,6 +14,7 @@ import 'package:rotalog/modules/home/widgets/detalhes_page.dart';
 import 'package:rotalog/modules/perfil/perfilPage.dart';
 import 'package:rotalog/modules/registro/registro_binding.dart';
 import 'package:rotalog/modules/registro/registro_page.dart';
+import 'package:rotalog/modules/settings/settings_binding.dart';
 import 'package:rotalog/modules/settings/settings_page.dart';
 
 Future<void> main() async {
@@ -60,7 +61,7 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: '/setting',
           page: () => SettingsPage(),
-          binding: HomeBinding(),
+          binding: SettingsBinding(),
         ),
         GetPage(
           name: '/perfil',
