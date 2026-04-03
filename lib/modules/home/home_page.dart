@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:rotalog/data/models/viagem_model.dart';
+import 'package:rotalog/modules/about/about_page.dart';
 import 'package:rotalog/modules/home/home_controller.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -67,6 +68,13 @@ class HomePage extends GetView<HomeController> {
                 isDarkMode,
                 RemixIcons.notification_3_line,
                 () {},
+              ),
+              const SizedBox(width: 12),
+              _appBarActionButton(
+                theme,
+                isDarkMode,
+                RemixIcons.information_line,
+                () => Get.toNamed('/about'),
               ),
               const SizedBox(width: 12),
               GestureDetector(

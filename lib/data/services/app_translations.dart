@@ -21,6 +21,16 @@ class AppTranslations extends Translations {
       // MAINPAGE
       'ms_minhas_viagens': 'Minhas Viagens',
       'ms_configuracao': 'Configuração',
+      // ABOUTPAGE
+      'ab_titulo': 'SOBRE',
+      'ab_version': 'Versão 1.0.4 + Build 2026',
+      'ab_descrition':
+          'O Rotalog foi desenvolvido para transformar a experiência de motoristas virtuais, trazendo ferramentas reais de logística, gestão financeira e progressão de carreira para o Euro Truck Simulator 2 e American Truck Simulator.',
+      'ab_dev': 'Desenvolvidor',
+      'ab_repo': 'Repositório Oficial',
+      'ab_lienca': 'Licença',
+      'ab_powered_by': 'distribuído por',
+      'ab_check_for_updates': 'Verificar Atualizações',
       // HOMEPAGE
       'hp_titulo': "ROTA LOG",
       'hp_novo_registro': "NOVO REGISTRO",
@@ -121,6 +131,16 @@ class AppTranslations extends Translations {
       // MAINPAGE
       'ms_minhas_viagens': 'My Trips',
       'ms_configuracao': 'Configuration',
+      // ABOUTPAGE
+      'ab_titulo': 'ABOUT',
+      'ab_version': 'Version 1.0.4 + Build 2026',
+      'ab_descrition':
+          'Rotalog was developed to transform the experience of virtual drivers, bringing real logistics, financial management and career progression tools to Euro Truck Simulator 2 and American Truck Simulator.',
+      'ab_dev': 'Developer',
+      'ab_repo': 'Official Repository',
+      'ab_lienca': 'License',
+      'ab_powered_by': 'Distributed by',
+      'ab_check_for_updates': 'Check for Updates',
       // HOMEPAGE
       'hp_titulo': "LOG ROUTE",
       'hp_novo_registro': "NEW RECORD",
@@ -221,6 +241,16 @@ class AppTranslations extends Translations {
       // MAINPAGE
       'ms_minhas_viagens': 'Mis viajes',
       'ms_configuracao': 'Configuración',
+      // ABOUTPAGE
+      'ab_titulo': 'ACERCA DE',
+      'ab_version': 'Versión 1.0.4 + Compilación 2026',
+      'ab_descrition':
+          'Rotalog se desarrolló para transformar la experiencia de los conductores virtuales, aportando herramientas reales de logística, gestión financiera y progresión profesional a Euro Truck Simulator 2 y American Truck Simulator.',
+      'ab_dev': 'Desarrollador',
+      'ab_repo': 'Repositorio oficial',
+      'ab_lienca': 'Licencia',
+      'ab_powered_by': 'Distribuido por',
+      'ab_check_for_updates': 'Buscar actualizaciones',
       //PÁGINA INICIO
       'hp_titulo': "RUTA DE REGISTRO",
       'hp_novo_registro': "NUEVO REGISTRO",

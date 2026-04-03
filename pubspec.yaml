@@ -1,7 +1,7 @@
 name: rotalog
 description: "A new Flutter project."
 
-publish_to: 'none' 
+publish_to: 'none'
 
 version: 1.0.0+1
 
@@ -22,9 +22,13 @@ dependencies:
   get_storage: ^2.1.1
   google_fonts: ^8.0.2
   google_nav_bar: ^5.0.7
+  http: ^1.6.0
   intl: ^0.20.2
+  package_info_plus: ^9.0.1
   remixicon: ^4.9.1
   shimmer: ^3.0.0
+  url_launcher: ^6.3.2
+  version: ^3.0.2
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4

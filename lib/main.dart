@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:rotalog/data/services/app_translations.dart';
 import 'package:rotalog/main_screen.dart';
+import 'package:rotalog/modules/about/about_binding.dart';
+import 'package:rotalog/modules/about/about_page.dart';
 import 'package:rotalog/modules/auth/loginPage.dart';
 import 'package:rotalog/modules/home/home_binding.dart';
 import 'package:rotalog/modules/home/home_page.dart';
@@ -47,6 +49,12 @@ class MyApp extends StatelessWidget {
           name: '/main',
           page: () => MainScreen(),
           binding: HomeBinding(),
+        ),
+        GetPage(
+          name: '/about',
+          page: () => AboutPage(),
+          binding: AboutBinding(),
+          transition: Transition.downToUp,
         ),
         GetPage(name: '/home', page: () => HomePage(), binding: HomeBinding()),
         GetPage(
