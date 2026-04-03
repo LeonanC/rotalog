@@ -4,7 +4,10 @@ import 'package:intl/intl.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:rotalog/data/models/viagem_model.dart';
 import 'package:rotalog/modules/home/home_controller.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:rotalog/modules/home/widgets/empty_state.dart';
+import 'package:rotalog/modules/home/widgets/filter_button.dart';
+import 'package:rotalog/modules/home/widgets/shimmer_list.dart';
+import 'package:rotalog/modules/home/widgets/viagem_card.dart';
 
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
@@ -158,7 +161,7 @@ class HomePage extends GetView<HomeController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "${'hp_total_percorrido'.tr} (${controller.diasFiltro.value}d)",
+                      "${'hp_total_percorrido'.tr} (${controller.filtroAtual.value.dias}d)",
                       style: TextStyle(
                         fontFamily: 'Montserrat',
                         color: Colors.white.withOpacity(0.7),
@@ -205,56 +208,23 @@ class HomePage extends GetView<HomeController> {
                 color: Colors.black.withOpacity(0.15),
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _filterButton("7D", 7),
-                  _filterButton("30D", 30),
-                  _filterButton("90D", 90),
-                  _filterButton("TUDO", 3650),
-                ],
+              child: Obx(
+                () => Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: PeriodoFiltro.values.map((f) {
+                    return FilterButton(
+                      filtro: f,
+                      isSelected: controller.filtroAtual.value == f,
+                      onTap: () => controller.mudarFiltro(f),
+                    );
+                  }).toList(),
+                ),
               ),
             ),
           ],
         ),
       ),
     );
-  }
-
-  Widget _filterButton(String label, int dias) {
-    return Obx(() {
-      bool ativo = controller.diasFiltro.value == dias;
-      return GestureDetector(
-        onTap: () => controller.mudarFiltro(dias),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 250),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: BoxDecoration(
-            color: ativo ? Colors.white : Colors.transparent,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: ativo
-                ? [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 10,
-                      offset: Offset(0, 4),
-                    ),
-                  ]
-                : [],
-          ),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontFamily: 'Montserrat',
-              fontSize: 11,
-              color: ativo ? primaryAccent : Colors.white70,
-              fontWeight: ativo ? FontWeight.w800 : FontWeight.w500,
-              letterSpacing: 0.5,
-            ),
-          ),
-        ),
-      );
-    });
   }
 
   Widget _buildFAB(BuildContext context, ThemeData theme) {
@@ -334,7 +304,7 @@ class HomePage extends GetView<HomeController> {
             _buildStatCard(
               theme,
               "hp_media".tr,
-              "${(controller.totalDistancia.value / (controller.diasFiltro.value == 3650 ? 30 : controller.diasFiltro.value)).toStringAsFixed(1)} KM",
+              "${(controller.totalDistancia.value / (controller.filtroAtual.value.dias == 3650 ? 30 : controller.filtroAtual.value.dias)).toStringAsFixed(1)} KM",
               RemixIcons.flashlight_line,
               successAccent,
             ),
@@ -442,15 +412,15 @@ class HomePage extends GetView<HomeController> {
   Widget _buildListaViagens(ThemeData theme) {
     return Obx(() {
       if (controller.isLoading.value) {
-        return _buildShimmerList(theme);
+        return ShimmerList();
       }
 
       if (controller.viagens.isEmpty) {
-        return _buildEmptyState(theme);
+        return EmptyState();
       }
 
       final listaParaExibir = controller.viagensFiltradas;
-      if (listaParaExibir.isEmpty) return _buildEmptyState(theme);
+      if (listaParaExibir.isEmpty) return EmptyState();
 
       final viagensAgrupadas = _agruparViagensPorData(listaParaExibir);
       final categorias = viagensAgrupadas.keys.toList();
@@ -468,7 +438,11 @@ class HomePage extends GetView<HomeController> {
               _buildDateHeader(theme, categoria),
               ...viagensDaCategoria
                   .map(
-                    (v) => _buildViagemCard(theme, v, v.status == 'Finalizada'),
+                    (v) => ViagemCard(
+                      viagem: v,
+                      concluida: v.status == 'Finalizada',
+                      onTap: () => Get.toNamed('/detail', arguments: v),
+                    ),
                   )
                   .toList(),
             ],
@@ -488,173 +462,6 @@ class HomePage extends GetView<HomeController> {
           fontSize: 10,
           fontWeight: FontWeight.bold,
           letterSpacing: 1.2,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildShimmerList(ThemeData theme) {
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      itemCount: 5,
-      itemBuilder: (context, index) => Shimmer.fromColors(
-        baseColor: theme.cardColor,
-        highlightColor: theme.highlightColor,
-        child: Container(
-          margin: const EdgeInsets.only(bottom: 16),
-          height: 100,
-          decoration: BoxDecoration(
-            color: Colors.black,
-            borderRadius: BorderRadius.circular(20),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildEmptyState(ThemeData theme) {
-    return SingleChildScrollView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      child: Container(
-        height: 300,
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              RemixIcons.ghost_line,
-              size: 50,
-              color: theme.textTheme.bodySmall?.color?.withOpacity(0.1),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              "hp_nenhuma_viagem".tr,
-              style: TextStyle(
-                fontFamily: 'Montserrat',
-                color: theme.textTheme.bodySmall?.color?.withOpacity(0.3),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildViagemCard(ThemeData theme, ViagemModel viagem, bool concluida) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      decoration: BoxDecoration(
-        color: theme.cardColor,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 10,
-            offset: Offset(0, 4),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: InkWell(
-          onTap: () => Get.toNamed('/detail', arguments: viagem),
-          child: IntrinsicHeight(
-            child: Row(
-              children: [
-                Container(
-                  width: 6,
-                  color: concluida ? Colors.greenAccent : Colors.orangeAccent,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                "${viagem.origem} ➔ ${viagem.destino}",
-                                style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  color: theme.textTheme.bodyLarge?.color,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                            _buildStatusBadge(concluida),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                        Row(
-                          children: [
-                            Icon(
-                              RemixIcons.box_3_line,
-                              size: 14,
-                              color: Colors.blueAccent,
-                            ),
-                            const SizedBox(width: 5),
-                            Expanded(
-                              child: Text(
-                                "${viagem.carga} • ${controller.formarCarga(viagem.peso)}",
-                                maxLines: 2,
-                                style: const TextStyle(
-                                  color: Colors.blueAccent,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            const Spacer(),
-                            Icon(
-                              RemixIcons.map_pin_range_line,
-                              size: 14,
-                              color: theme.textTheme.bodySmall?.color
-                                  ?.withOpacity(0.5),
-                            ),
-                            const SizedBox(width: 5),
-                            Text(
-                              '${controller.formatarDistancia(viagem.distancia)}',
-                              style: TextStyle(
-                                color: theme.textTheme.bodyLarge?.color,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStatusBadge(bool finalizada) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(
-        color: finalizada
-            ? Colors.greenAccent.withOpacity(0.1)
-            : Colors.orangeAccent.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        finalizada ? "hp_concluido".tr : "hp_em_andamento".tr,
-        style: TextStyle(
-          fontFamily: 'Montserrat',
-          fontSize: 8,
-          fontWeight: FontWeight.w900,
-          color: finalizada ? Colors.greenAccent : Colors.orangeAccent,
         ),
       ),
     );

@@ -8,6 +8,17 @@ import 'package:get/get.dart';
 import 'package:rotalog/data/models/viagem_model.dart';
 import 'package:rotalog/modules/settings/settings_controller.dart';
 
+enum PeriodoFiltro {
+  semana(7, "7D"),
+  mes(30, "30D"),
+  trimestre(90, "90D"),
+  tudo(3650, "TUDO");
+
+  final int dias;
+  final String label;
+  const PeriodoFiltro(this.dias, this.label);
+}
+
 class HomeController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -15,7 +26,7 @@ class HomeController extends GetxController {
   final settingsCtrl = Get.find<SettingsController>();
 
   var viagens = <ViagemModel>[].obs;
-  var diasFiltro = 30.obs;
+  var filtroAtual = PeriodoFiltro.semana.obs;
   var isLoading = false.obs;
   var totalDistancia = 0.0.obs;
   var seachText = ''.obs;
@@ -39,7 +50,6 @@ class HomeController extends GetxController {
   void onInit() async {
     super.onInit();
     ever(viagens, (_) => _calcularTotalDistancia());
-    ever(diasFiltro, (_) => _calcularTotalDistancia());
 
     await _carregarDadosMotorista();
 
@@ -47,6 +57,17 @@ class HomeController extends GetxController {
     loadAuxiliaryData();
 
     bindViagens();
+  }
+
+  @override
+  void onClose() {
+    _timer?.cancel();
+    receitaController.dispose();
+    super.onClose();
+  }
+
+  void mudarFiltro(PeriodoFiltro novoFiltro) {
+    filtroAtual.value = novoFiltro;
   }
 
   void removerDespesa(int index) => despesas.removeAt(index);
@@ -276,7 +297,7 @@ class HomeController extends GetxController {
     }
 
     final dataLimite = DateTime.now().subtract(
-      Duration(days: diasFiltro.value),
+      Duration(days: filtroAtual.value.dias),
     );
 
     totalDistancia.value = viagens
@@ -285,8 +306,6 @@ class HomeController extends GetxController {
         })
         .fold(0.0, (sum, item) => sum + item.distancia);
   }
-
-  void mudarFiltro(int dias) => diasFiltro.value = dias;
 
   Future<void> atualizarTemposRodovias(
     String docId,
