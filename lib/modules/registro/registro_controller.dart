@@ -18,7 +18,7 @@ class RegistroController extends GetxController {
   final receitaController = MoneyMaskedTextController(
     decimalSeparator: ',',
     thousandSeparator: '.',
-    precision: 2,
+    precision: 3,
     leftSymbol: 'R\$ ',
   );
 
@@ -75,12 +75,20 @@ class RegistroController extends GetxController {
   }
 
   void adicionarRodovia() {
-    if (rodoviasInputController.text.isNotEmpty) {
+    String nome = rodoviasInputController.text.trim().toUpperCase();
+
+    if (nome.isNotEmpty) {
+      String tipoPrincipal = tipoRodoviaSelecionada.isNotEmpty
+          ? tipoRodoviaSelecionada.first
+          : 'Rodovia';
+
       rodoviasSelecionadas.add({
-        'nome': rodoviasInputController.text.toUpperCase(),
+        'nome': nome,
+        'tipo': tipoPrincipal,
         'duracao': 0,
       });
       rodoviasInputController.clear();
+      tipoRodoviaSelecionada.clear();
     }
   }
 

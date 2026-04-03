@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:rotalog/data/models/viagem_model.dart';
 import 'package:rotalog/modules/home/home_controller.dart';
+import 'package:rotalog/modules/settings/settings_controller.dart';
 
 class DetalhesPage extends StatefulWidget {
   final Map<String, dynamic> dados;
@@ -18,6 +19,7 @@ class DetalhesPage extends StatefulWidget {
 
 class _DetalhesPageState extends State<DetalhesPage> {
   final HomeController _controller = Get.find<HomeController>();
+  final SettingsController settings = Get.find<SettingsController>();
 
   static const _bgColor = Color(0xFF0F172A);
   static const _cardColor = Color(0xFF1E293B);
@@ -344,17 +346,17 @@ class _DetalhesPageState extends State<DetalhesPage> {
             children: [
               _financeiroItem(
                 "Receita",
-                "R\$ ${receita.toStringAsFixed(2)}",
+                settings.formatarCurrency(receita),
                 Colors.greenAccent,
               ),
               _financeiroItem(
                 "Despesas",
-                "R\$ ${totalDespesas.toStringAsFixed(2)}",
+                settings.formatarCurrency(totalDespesas),
                 Colors.redAccent,
               ),
               _financeiroItem(
                 "Lucro",
-                "R\$ ${lucro.toStringAsFixed(2)}",
+                settings.formatarCurrency(lucro),
                 Colors.blueAccent,
               ),
             ],
@@ -658,13 +660,13 @@ class _DetalhesPageState extends State<DetalhesPage> {
           _infoItem(
             RemixIcons.scales_line,
             "dt_peso".tr,
-            "${dados['peso']} kg",
+            settings.formatarPeso(dados['peso']),
           ),
           _infoItem(RemixIcons.box_3_line, "dt_carga".tr, dados['carga']),
           _infoItem(
             RemixIcons.route_line,
             "dt_distancia".tr,
-            "${dados['distancia']} km",
+            settings.formatarDistancia(dados['distancia']),
           ),
         ],
       ),
@@ -771,9 +773,7 @@ class _DetalhesPageState extends State<DetalhesPage> {
           ),
         ),
         subtitle: Text(
-          idx < (widget.dados['tipos_rodovias']?.length ?? 0)
-              ? widget.dados['tipos_rodovia'][idx]
-              : 'Rodovia',
+          idx < (rodovia['tipo']?.length ?? 0) ? rodovia['tipo'] : 'Rodovia',
           style: TextStyle(color: Colors.white38, fontSize: 12),
         ),
         trailing: Text(

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:rotalog/data/models/viagem_model.dart';
-import 'package:rotalog/modules/about/about_page.dart';
 import 'package:rotalog/modules/home/home_controller.dart';
 import 'package:shimmer/shimmer.dart';
 

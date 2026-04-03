@@ -52,7 +52,6 @@ class RegistroPage extends GetView<RegistroController> {
                 controller: controller.receitaController,
                 icon: RemixIcons.money_dollar_circle_line,
                 keyboardType: TextInputType.number,
-                isNumberic: true,
               ),
               _buildCategoriaSelector(),
               const SizedBox(height: 20),
@@ -285,7 +284,13 @@ class RegistroPage extends GetView<RegistroController> {
                 controller: controller.rodoviasInputController,
                 decoration: InputDecoration(
                   hintText: "reg_hint_rodovias".tr,
-                  hintStyle: TextStyle(color: Colors.white24),
+                  suffixText: controller.tipoCategoriaSelecionada.isNotEmpty
+                      ? "será ${controller.tipoRodoviaSelecionada.isNotEmpty}"
+                      : '',
+                  suffixStyle: TextStyle(
+                    color: Colors.blueAccent,
+                    fontSize: 10,
+                  ),
                 ),
               ),
             ),
@@ -303,11 +308,10 @@ class RegistroPage extends GetView<RegistroController> {
                 .map(
                   (r) => Chip(
                     label: Text(
-                      r['nome'],
+                      "${r['nome']} (${r['tipo']})",
                       style: TextStyle(fontFamily: 'ShareTechMono'),
                     ),
                     onDeleted: () => controller.removerRodovia(r['nome']),
-
                     deleteIconColor: Colors.redAccent,
                   ),
                 )

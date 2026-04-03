@@ -35,6 +35,15 @@ class SettingsPage extends GetView<SettingsController> {
             Obx(
               () => _buildSettingTile(
                 theme: theme,
+                icon: RemixIcons.money_dollar_circle_line,
+                title: "st_moeda_preferida".tr,
+                subtitle: controller.useCurrency.value,
+                onTap: () => _showCurrencyModal(context, theme),
+              ),
+            ),
+            Obx(
+              () => _buildSettingTile(
+                theme: theme,
                 icon: RemixIcons.ruler_2_line,
                 title: "st_unidade_distancia".tr,
                 subtitle: controller.useMiles.value
@@ -108,6 +117,79 @@ class SettingsPage extends GetView<SettingsController> {
           ],
         ),
       ),
+    );
+  }
+
+  void _showCurrencyModal(BuildContext context, ThemeData theme) {
+    Get.bottomSheet(
+      Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: theme.cardColor,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+          border: Border.all(color: Colors.white10),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'st_selecione_moeda'.tr,
+              style: TextStyle(
+                fontFamily: 'Montserrat',
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+            const SizedBox(height: 20),
+            _currencyItem(theme, "Real Brasileiro", 'R\$'),
+            _currencyItem(theme, "Euro", '€'),
+            _currencyItem(theme, "Dólar Americando", 'US\$'),
+            _currencyItem(theme, "Libra Esterlina", '£'),
+            const SizedBox(height: 10),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _currencyItem(ThemeData theme, String name, String symbol) {
+    final bool isSelected = controller.useCurrency.value == symbol;
+
+    return ListTile(
+      leading: Container(
+        width: 40,
+        height: 40,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.blueAccent : Colors.blue.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Text(
+          symbol,
+          style: TextStyle(
+            color: isSelected ? Colors.white : Colors.blueAccent,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
+      ),
+      title: Text(
+        name,
+        style: TextStyle(
+          color: theme.textTheme.bodyLarge?.color,
+          fontFamily: 'Montserrat',
+          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+        ),
+      ),
+      trailing: isSelected
+          ? Icon(RemixIcons.check_line, color: Colors.blueAccent)
+          : null,
+      onTap: () {
+        controller.changeCurrency(symbol);
+        Get.back();
+      },
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     );
   }
 

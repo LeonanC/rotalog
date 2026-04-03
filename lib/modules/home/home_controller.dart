@@ -263,17 +263,7 @@ class HomeController extends GetxController {
   }
 
   void _calcularTotalDistancia() {
-    DateTime limite = DateTime.now().subtract(Duration(days: diasFiltro.value));
-
-    double soma = viagens.where((v) => v.data.isAfter(limite)).fold(0.0, (
-      soma,
-      v,
-    ) {
-      final distStr = v.distancia;
-      return soma + (distStr);
-    });
-
-    totalDistancia.value = soma;
+    totalDistancia.value = viagens.fold(0, (sum, item) => sum + item.distancia);
   }
 
   void mudarFiltro(int dias) => diasFiltro.value = dias;
