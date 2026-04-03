@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "158459868848",
+    "project_id": "rotalog-99ee2",
+    "storage_bucket": "rotalog-99ee2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:158459868848:android:ac396f7d418ba0a30e6d75",
+        "android_client_info": {
+          "package_name": "br.com.rotalog"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBY0JHpMpfBcmiOlkYjM9g0R6t0kp12vAQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
